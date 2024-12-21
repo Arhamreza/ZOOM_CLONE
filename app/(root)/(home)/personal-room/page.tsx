@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useGetCallById } from '@/hooks/useGetCallById';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useRouter } from 'next/navigation';
+import { useCopyToClipboard } from 'usehooks-ts';
 const Table=({title,discription}:{title:string;discription:string})=>(
   <div className='flex flex-col items-start gap-2 xl:flex-row'>
     <h1 className='text-base font-medium text-sky-1 lg:text-xl xl:min-w-32'>{title}:</h1>
@@ -14,6 +15,8 @@ const Table=({title,discription}:{title:string;discription:string})=>(
   </div>
 )
 const PersonalRoom = () => {
+  const [copiedText, copy] = useCopyToClipboard()
+  
   const {user}=useUser()
   const router=useRouter()
   const client=useStreamVideoClient()
@@ -49,7 +52,7 @@ const PersonalRoom = () => {
         Start Meeting
       </Button>
       <Button   className='bg-dark-3' onClick={()=>{
-         navigator.clipboard.writeText(meetingLink);
+         copy(meetingLink);
          toast({
            title: "Link Copied",
          });
